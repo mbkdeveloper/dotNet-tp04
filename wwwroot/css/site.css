@@ -1,0 +1,38 @@
+/* ================================================================
+   site.css - Styles globaux de l'application GestionArticles
+   ================================================================ */
+
+/* Taille de police de base adaptée selon la taille de l'écran */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Espace en bas du body pour éviter que le footer cache le contenu */
+body {
+    margin-bottom: 60px;
+}
+
+/* Style de focus pour l'accessibilité (contour visible lors de la navigation clavier) */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Images de produits dans les cartes : hauteur fixe pour une grille uniforme */
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: contain; /* Affiche l'image entière sans la déformer */
+    background-color: #f8f9fa;
+}

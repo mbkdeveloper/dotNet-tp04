@@ -1,0 +1,66 @@
+@model GestionArticles.ViewModels.CreateViewModel
+
+@{
+    ViewData["Title"] = "Ajouter un produit";
+}
+
+<h1 class="mb-4">Ajouter un nouveau produit</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        @* enctype="multipart/form-data" est obligatoire pour l'upload de fichiers *@
+        <form enctype="multipart/form-data" asp-action="Create" method="post">
+
+            @* Résumé des erreurs de validation *@
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-bold"></label>
+                <input asp-for="Name" class="form-control" placeholder="Ex: Imprimante HP" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label fw-bold"></label>
+                <input asp-for="Price" class="form-control" type="text" placeholder="Ex: 150.00 ou 150,00" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="QteStock" class="form-label fw-bold"></label>
+                <input asp-for="QteStock" class="form-control" type="number" min="0" placeholder="Ex: 10" />
+                <span asp-validation-for="QteStock" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label fw-bold"></label>
+                @* asp-items lie la liste déroulante aux catégories chargées par le contrôleur *@
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                    <option value="">-- Sélectionner une catégorie --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ImagePath" class="form-label fw-bold"></label>
+                @* asp-for="ImagePath" génère un input type="file" car ImagePath est de type IFormFile *@
+                <input asp-for="ImagePath" class="form-control" type="file" accept="image/*" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-check-circle"></i> Créer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

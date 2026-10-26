@@ -1,0 +1,90 @@
+@model GestionArticles.ViewModels.EditViewModel
+
+@{
+    ViewData["Title"] = "Modifier le produit";
+    // Chemin de l'image existante (noimage.svg si aucune image)
+    var photoPath = "~/images/" + (Model.ExistingImagePath ?? "noimage.svg");
+}
+
+<h1 class="mb-4">Modifier le produit</h1>
+<hr />
+
+@* enctype="multipart/form-data" est obligatoire pour l'upload de fichiers *@
+<form asp-controller="Product" asp-action="Edit" enctype="multipart/form-data" method="post">
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    @* Champs cachés : indispensables pour que le contrôleur sache quel produit modifier *@
+    <input hidden asp-for="ProductId" />
+    <input hidden asp-for="ExistingImagePath" />
+
+    <div class="row">
+        <div class="col-md-5">
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-bold"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label fw-bold"></label>
+                <input asp-for="Price" class="form-control" type="text" placeholder="Ex: 150.00 ou 150,00" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="QteStock" class="form-label fw-bold"></label>
+                <input asp-for="QteStock" class="form-control" type="number" min="0" />
+                <span asp-validation-for="QteStock" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label fw-bold"></label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ImagePath" class="form-label fw-bold"></label>
+                @* Si un fichier est sélectionné, le contrôleur remplacera l'image existante *@
+                <input asp-for="ImagePath" class="form-control" type="file" accept="image/*" id="imageInput" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div>
+
+            @* Aperçu de l'image actuelle du produit *@
+            <div class="mb-3">
+                <label class="form-label fw-bold">Image actuelle :</label>
+                <br />
+                <img id="imageEmp"
+                     src="@photoPath"
+                     asp-append-version="true"
+                     height="150"
+                     width="150"
+                     class="img-thumbnail" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+                <a asp-action="Index" asp-controller="Product" class="btn btn-secondary">Annuler</a>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        // Mise à jour de l'aperçu de l'image en temps réel quand l'utilisateur choisit un fichier
+        document.getElementById('imageInput').addEventListener('change', function () {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('imageEmp').src = e.target.result;
+            };
+            if (this.files[0]) {
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

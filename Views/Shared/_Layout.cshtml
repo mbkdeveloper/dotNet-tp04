@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Gestion des Articles</title>
+
+    @* Bootstrap CSS *@
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    @* Bootstrap Icons *@
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    @* Styles du site *@
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    @* Styles spécifiques au projet *@
+    <link rel="stylesheet"
+          href="~/css/atelier_2.styles.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom shadow-sm mb-3">
+            <div class="container-fluid">
+
+                @* Bouton pour afficher / cacher le menu latéral des catégories *@
+                <button class="btn btn-outline-primary me-2" type="button" id="toggleMenu">
+                    <img src="~/images/categorie.png" alt="Ouvrir la liste des catégories" style="height:24px;width:24px;" />
+                </button>
+
+                @* Logo / Titre *@
+                <a class="navbar-brand text-info"
+                   asp-controller="Product"
+                   asp-action="Index">
+                    Gestion des Articles
+                </a>
+
+                @* Bouton pour le menu mobile *@
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarContent"
+                        aria-controls="navbarContent"
+                        aria-expanded="false"
+                        aria-label="Afficher le menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                @* Authentification *@
+                @using Microsoft.AspNetCore.Identity
+                @inject SignInManager<IdentityUser> SignInManager
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+
+                    @* Menu principal *@
+                    <ul class="navbar-nav me-auto">
+
+                        @* Home *@
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        @* Administration (accessible uniquement aux administrateurs) *@
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="CreateRole">Create Role</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="ListRoles">List Roles</a>
+                                </div>
+                            </li>
+                        }
+
+                        @* Articles *@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="articlesDropdown"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Articles
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                aria-labelledby="articlesDropdown">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Product"
+                                       asp-action="Index">
+                                        Tous les articles
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Product"
+                                       asp-action="Create">
+                                        Nouvel article
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        @* Catégories *@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               id="categoriesDropdown"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Catégories
+                            </a>
+
+                            <ul class="dropdown-menu"
+                                aria-labelledby="categoriesDropdown">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Category"
+                                       asp-action="Index">
+                                        Toutes les catégories
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Category"
+                                       asp-action="Create">
+                                        Nouvelle catégorie
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        @* Mon Panier *@
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Panier" asp-action="Index">Mon Panier</a>
+                        </li>
+
+                    </ul>
+
+                    @* Barre de recherche *@
+                    <form class="d-flex me-sm-3 mb-2 mb-sm-0"
+                          asp-controller="Product"
+                          asp-action="Search"
+                          method="get">
+
+                        <input class="form-control me-2"
+                               type="search"
+                               name="val"
+                               placeholder="Rechercher..."
+                               aria-label="Rechercher un article" />
+
+                        <button class="btn btn-outline-light"
+                                type="submit">
+                            Rechercher
+                        </button>
+                    </form>
+
+                    @* Menu d'authentification *@
+                    <ul class="navbar-nav">
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-controller="Account" asp-action="Logout">
+                                    <button type="submit" style="width:auto" class="nav-link btn btn-link py-0 text-light">
+                                        Logout @User.Identity?.Name
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @* Contenu principal *@
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Menu latéral pour les catégories -->
+            <div class="col-md-2" id="sidebar" style="display: none;">
+                <p> </p>
+                <div class="list-group">
+                    @await Html.PartialAsync("_CategoriesMenu", ViewData["Categories"])
+                </div>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="col-md-12" id="mainContent">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    @* Pied de page *@
+    <footer class="border-top footer text-muted mt-4">
+        <div class="container text-center py-3">
+            &copy; @DateTime.Now.Year - Gestion des Articles
+        </div>
+    </footer>
+
+    @* Scripts *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/CustomScript.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

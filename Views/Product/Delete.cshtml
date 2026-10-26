@@ -1,0 +1,35 @@
+@model GestionArticles.Models.Product
+
+@{
+    ViewData["Title"] = "Supprimer le produit";
+}
+
+<h1 class="mb-3 text-danger">Supprimer le produit</h1>
+<h4 class="mb-4">Êtes-vous sûr de vouloir supprimer ce produit ?</h4>
+<hr />
+
+<div class="card col-md-6 mb-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Price)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Price) DT</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.QteStock)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.QteStock)</dd>
+
+            <dt class="col-sm-4">Catégorie</dt>
+            <dd class="col-sm-8">
+                @(Model.Category != null ? Model.Category.CategoryName : "Non spécifiée")
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ProductId" />
+    <input type="submit" value="Oui, supprimer" class="btn btn-danger me-2" />
+    <a asp-action="Index" class="btn btn-secondary">Non, annuler</a>
+</form>

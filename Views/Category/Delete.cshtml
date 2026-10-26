@@ -1,0 +1,24 @@
+@model GestionArticles.Models.Category
+
+@{
+    ViewData["Title"] = "Supprimer la catégorie";
+}
+
+<h1 class="mb-3 text-danger">Supprimer la catégorie</h1>
+<h4 class="mb-4">Êtes-vous sûr de vouloir supprimer cette catégorie ?</h4>
+<hr />
+
+<div class="card col-md-6 mb-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CategoryName)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.CategoryName)</dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="CategoryId" />
+    <input type="submit" value="Oui, supprimer" class="btn btn-danger me-2" />
+    <a asp-action="Index" class="btn btn-secondary">Non, annuler</a>
+</form>

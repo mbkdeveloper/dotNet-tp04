@@ -1,0 +1,130 @@
+/* ================================================================
+   atelier_2.styles.css - Styles personnalisés du projet Atelier 2
+   ================================================================ */
+
+/* --- Variables CSS globales --- */
+:root {
+    --primary-color: #007bff;
+    --danger-color:  #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color:    #17a2b8;
+}
+
+/* --- Navigation (navbar) --- */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: #f8f9fa;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 60px;
+    white-space: nowrap;
+}
+
+/* --- Formulaires : style du focus --- */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- Cartes de produits : effet de survol --- */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Tableau : en-tête et survol des lignes --- */
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* --- Liens --- */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* --- Conteneur principal : largeur maximale --- */
+.container {
+    max-width: 1200px;
+}
+
+/* La zone principale doit remplir l'écran (hors navbar + footer) */
+main {
+    min-height: calc(100vh - 200px);
+}
+
+/* --- Menus déroulants --- */
+.dropdown-menu {
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item:hover {
+    background-color: #f0f4ff;
+    color: var(--primary-color);
+}
+
+/* --- Animation d'apparition (utilisable avec la classe "fade-in") --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* --- Images de produit --- */
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+}
+
+/* --- Responsive : ajustements pour petits écrans (mobiles) --- */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .card-img-top {
+        height: 150px;
+    }
+}
